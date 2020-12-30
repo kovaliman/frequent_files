@@ -81,7 +81,7 @@ class GenerateService extends GeneratorCommand
      */
     protected function getStub()
     {
-        return  app_path() . '/Console/Commands/Stubs/DummyService.stub';
+        return  __DIR__.'/Stubs/DummyService.stub';
     }
 
     /**

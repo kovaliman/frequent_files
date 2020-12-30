@@ -49,7 +49,7 @@ class GenerateInterface extends GeneratorCommand
      */
     protected function getStub()
     {
-        return  app_path() . '/Console/Commands/Stubs/DummyInterface.stub';
+        return  __DIR__.'/Stubs/DummyInterface.stub';
     }
 
     /**

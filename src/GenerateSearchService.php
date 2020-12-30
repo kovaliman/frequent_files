@@ -53,7 +53,7 @@ class GenerateSearchService extends GeneratorCommand
      */
     protected function getStub()
     {
-        return  app_path() . '/Console/Commands/Stubs/DummySearchService.stub';
+        return  __DIR__.'/Stubs/DummySearchService.stub';
     }
 
     /**

@@ -94,7 +94,7 @@ class GenerateEloquentConcrete extends GeneratorCommand
      */
     protected function getStub()
     {
-        return app_path() . '/Console/Commands/Stubs/DummyEloquentConcrete.stub';
+        return __DIR__.'/Stubs/DummyEloquentConcrete.stub';
     }
 
     /**
