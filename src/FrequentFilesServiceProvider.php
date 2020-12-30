@@ -2,7 +2,6 @@
 
 namespace KovaLiman\FrequentlyFiles;
 
-use App\Console\Commands\GenerateModule;
 use Illuminate\Support\ServiceProvider;
 
 class FrequentFilesServiceProvider extends ServiceProvider
@@ -25,7 +24,11 @@ class FrequentFilesServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->commands([
-            GenerateModule::class
+            GenerateModule::class,
+            GenerateService::class,
+            GenerateInterface::class,
+            GenerateEloquentConcrete::class,
+            GenerateSearchService::class
         ]);
     }
 }
