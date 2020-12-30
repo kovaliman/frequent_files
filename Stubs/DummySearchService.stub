@@ -1,0 +1,36 @@
+<?php
+
+namespace {{ namespace }};
+
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+
+class SearchService
+{
+    /**
+     * @return string
+     */
+    public function getModel(): string
+    {
+        // TODO add model
+    }
+
+    /**
+     * @param int $id
+     * @return Model
+     */
+    public function byId(int $id): Model
+    {
+        return $this->getModel()::find($id);
+    }
+
+    /**
+     * @param array $ids
+     * @return Collection
+     */
+    public function byIds(array $ids): Collection
+    {
+        return $this->getModel()::whereIn('id', $ids);
+    }
+}
