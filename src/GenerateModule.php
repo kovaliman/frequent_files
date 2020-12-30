@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace KovaLiman\FrequentlyFiles;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\GeneratorCommand;

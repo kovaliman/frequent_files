@@ -1,32 +1,36 @@
 <?php
 
-namespace App\Console\Commands;
+namespace KovaLiman\FrequentlyFiles;
+
 
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
-class GenerateInterface extends GeneratorCommand
+class GenerateSearchService extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $name = 'make:interface';
+    protected $name = 'make:search';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new contract interface';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Contract';
+    protected $type = 'Class';
+
+    protected function buildClass($name)
+    {
+        $stub = $this->files->get($this->getStub());
+
+        return $this->replaceNamespace($stub, $name)
+            ->replaceClass($stub, $name);
+    }
+
 
     /**
      * Replace the class name for the given stub.
@@ -39,7 +43,7 @@ class GenerateInterface extends GeneratorCommand
     {
         $stub = parent::replaceClass($stub, $name);
 
-        return str_replace('DummyInterface', $this->argument('name'), $stub);
+        return str_replace('DummySearchService', $this->argument('name'), $stub);
     }
 
     /**
@@ -49,7 +53,7 @@ class GenerateInterface extends GeneratorCommand
      */
     protected function getStub()
     {
-        return  app_path() . '/Console/Commands/Stubs/DummyInterface.stub';
+        return  app_path() . '/Console/Commands/Stubs/DummySearchService.stub';
     }
 
     /**
@@ -60,7 +64,7 @@ class GenerateInterface extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Contracts';
+        return $rootNamespace . '\Services';
     }
 
     /**

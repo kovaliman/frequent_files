@@ -1,0 +1,12 @@
+{
+    "name": "kovaliman/frequentfiles",
+    "description": "Frequently used files",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "KovaLiman\\FrequentlyFiles\\": "src/"
+        }
+    }
+}
