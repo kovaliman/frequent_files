@@ -44,11 +44,11 @@ class GenerateService extends GeneratorCommand
 
         $singular = Str::singular($verb);
 
-        $repo_var = Str::lower($singular)."Repository";
+        $repo_var = Str::lower($singular) . "Repository";
 
-        $repo = $singular."Repository";
+        $repo = $singular . "Repository";
 
-        $repo_path = "App\\".env('APP_NAME')."\\".$verb."\\Contracts\\".$repo;
+        $repo_path = "App\\" . env('APP_NAME') . "\\" . $verb . "\\Contracts\\" . $repo;
 
         $stub = str_replace('{{ repo_var }}', $repo_var, $stub);
 
@@ -63,8 +63,8 @@ class GenerateService extends GeneratorCommand
     /**
      * Replace the class name for the given stub.
      *
-     * @param  string  $stub
-     * @param  string  $name
+     * @param string $stub
+     * @param string $name
      * @return string
      */
     protected function replaceClass($stub, $name)
@@ -81,13 +81,13 @@ class GenerateService extends GeneratorCommand
      */
     protected function getStub()
     {
-        return  __DIR__.'/Stubs/DummyService.stub';
+        return __DIR__ . '/Stubs/DummyService.stub';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)

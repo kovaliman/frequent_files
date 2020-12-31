@@ -41,7 +41,11 @@ class GenerateEloquentConcrete extends GeneratorCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        return $this->replaceNamespace($stub, $name)->replaceImplement($stub, $name)->addImport($stub, $name)->replaceClass($stub, $name);
+        return $this->replaceNamespace($stub, $name)
+            ->replaceImplement($stub, $name)
+            ->addImport($stub, $name)
+            ->traitNamespace($stub, $name)
+            ->replaceClass($stub, $name);
     }
 
     /**
@@ -72,6 +76,15 @@ class GenerateEloquentConcrete extends GeneratorCommand
         return $this;
     }
 
+    protected function traitNamespace(&$stub, $name)
+    {
+        $namespace = implode("\\", array_slice(explode("\\", $name), '0', '3'))."\\Traits\\ModelTrait";
+
+        $stub = str_replace('{{ trait_namespace }}', $namespace, $stub);
+
+        return $this;
+    }
+
     /**
      * Replace the class name for the given stub.
      *
@@ -94,7 +107,7 @@ class GenerateEloquentConcrete extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/Stubs/DummyEloquentConcrete.stub';
+        return __DIR__ . '/Stubs/DummyEloquentConcrete.stub';
     }
 
     /**

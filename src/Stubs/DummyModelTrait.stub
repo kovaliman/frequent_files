@@ -1,0 +1,16 @@
+<?php
+
+
+namespace {{ namespace }};
+
+
+trait ModelTrait
+{
+    /**
+     * @return string
+     */
+    public function getModel(): string
+    {
+        // TODO set model
+    }
+}

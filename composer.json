@@ -1,7 +1,7 @@
 {
     "name": "kovaliman/frequentfiles",
     "description": "Frequently used files",
-    "license": "MIT",
+    "license": "FREE",
     "minimum-stability": "stable",
     "require": {},
     "autoload": {

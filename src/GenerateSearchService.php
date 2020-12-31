@@ -4,6 +4,7 @@ namespace KovaLiman\FrequentlyFiles;
 
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 
 class GenerateSearchService extends GeneratorCommand
@@ -27,10 +28,18 @@ class GenerateSearchService extends GeneratorCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        return $this->replaceNamespace($stub, $name)
+        return $this->replaceNamespace($stub, $name)->traitNamespace($stub, $name)
             ->replaceClass($stub, $name);
     }
 
+    protected function traitNamespace(&$stub, $name)
+    {
+        $namespace = implode("\\", array_slice(explode("\\", $name), '0', '3'))."\\Traits\\ModelTrait";
+
+        $stub = str_replace('{{ trait_namespace }}', $namespace, $stub);
+
+        return $this;
+    }
 
     /**
      * Replace the class name for the given stub.
@@ -53,7 +62,7 @@ class GenerateSearchService extends GeneratorCommand
      */
     protected function getStub()
     {
-        return  __DIR__.'/Stubs/DummySearchService.stub';
+        return __DIR__ . '/Stubs/DummySearchService.stub';
     }
 
     /**
