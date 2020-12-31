@@ -15,5 +15,11 @@
                 "KovaLiman\\FrequentlyFiles\\FrequentFilesServiceProvider"
             ]
         }
-    }
+    },
+    "authors": [
+        {
+            "name": "Dragan Kovacevic",
+            "email": "dragankovacevic1982@gmail.com"
+        }
+    ]
 }
