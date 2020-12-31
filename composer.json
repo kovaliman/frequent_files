@@ -8,5 +8,12 @@
         "psr-4": {
             "KovaLiman\\FrequentlyFiles\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "KovaLiman\\FrequentlyFiles\\FrequentFilesServiceProvider"
+            ]
+        }
     }
 }
