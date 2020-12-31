@@ -2,7 +2,7 @@
     "name": "kovaliman/frequentfiles",
     "description": "Frequently used files",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {},
     "autoload": {
         "psr-4": {
