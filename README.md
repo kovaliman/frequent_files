@@ -1,9 +1,10 @@
 # Frequent Files
-
 Files frequently used for my project. Based on basic models actions.
 
 # Installation
+Run `composer require kovaliman/frequentfiles`
 
+# Usage
 Run command `php artisan generate:module Users` (Convention is to use plural for model with first letter uppercase)
 
 If you want to generate files for 'User' model, run command package will insert files in a directory which name is
