@@ -53,10 +53,6 @@ class GenerateModule extends Command
             'name' => "App\\".env('APP_NAME')."\\".$this->argument('name')."\\Services\\".Str::singular($this->argument('name'))."Service"
         ]);
 
-        Artisan::call('make:search', [
-            'name' => "App\\".env('APP_NAME')."\\".$this->argument('name')."\\Services\SearchService"
-        ]);
-
         Artisan::call('make:trait', [
             'name' => "App\\".env('APP_NAME')."\\".$this->argument('name')."\\Traits\ModelTrait"
         ]);

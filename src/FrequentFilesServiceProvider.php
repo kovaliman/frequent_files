@@ -27,9 +27,7 @@ class FrequentFilesServiceProvider extends ServiceProvider
             GenerateModule::class,
             GenerateService::class,
             GenerateInterface::class,
-            GenerateEloquentConcrete::class,
-            GenerateSearchService::class,
-            GenerateModelTrait::class
+            GenerateEloquentConcrete::class
         ]);
     }
 }

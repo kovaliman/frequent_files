@@ -9,7 +9,13 @@ use {{ trait_namespace }};
 
 class {{ class }} implements {{ concrete }}Repository
 {
-    use ModelTrait;
+    /**
+     * @return string
+     */
+    public function get(): string
+    {
+        //todo
+    }
 
     /**
      * @return Collection

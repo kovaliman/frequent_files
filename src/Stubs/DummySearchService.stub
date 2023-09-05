@@ -7,25 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use {{ trait_namespace }};
 
-class SearchService
+trait SearchService
 {
-    use ModelTrait;
-
     /**
      * @param int $id
      * @return Model
      */
-    public function byId(int $id): Model
+    public function byId(int $id, array $with = []): Model
     {
-        return $this->getModel()::find($id);
+        return $this->getModel()::with($with)->find($id);
     }
 
     /**
      * @param array $ids
      * @return Collection
      */
-    public function byIds(array $ids): Collection
+    public function byIds(array $ids, array $with = []): Collection
     {
-        return $this->getModel()::whereIn('id', $ids);
+        return $this->getModel()::with($with)->whereIn('id', $ids)->get();
     }
 }
