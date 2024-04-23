@@ -26,7 +26,7 @@ class GenerateInterface extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'Contract';
+    protected $type = 'Interface';
 
     /**
      * Replace the class name for the given stub.
@@ -39,9 +39,20 @@ class GenerateInterface extends GeneratorCommand
     {
         $stub = parent::replaceClass($stub, $name);
 
-        return str_replace('DummyInterface', $this->argument('name'), $stub);
+        return str_replace('DummyInterface', $this->argument('className'), $stub);
     }
 
+    protected function buildClass($name)
+    {
+        $stub = $this->files->get($this->getStub());
+
+        $stub = str_replace('{{ namespace }}', $this->argument('namespace'), $stub);
+        $stub = str_replace('{{ className }}', $this->argument('className'), $stub);
+        $stub = str_replace('{{ directoryName }}', $this->argument('directoryName'), $stub);
+
+        return $this->replaceClass($stub, $name);
+    }
+    
     /**
      * Get the stub file for the generator.
      *
@@ -60,7 +71,7 @@ class GenerateInterface extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Contracts';
+        return $this->argument('namespace');
     }
 
     /**
@@ -71,7 +82,10 @@ class GenerateInterface extends GeneratorCommand
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The name of the contract.'],
+            ['name', InputArgument::REQUIRED, 'The namespace of the contract.'],
+            ['namespace', InputArgument::REQUIRED, 'The namespace of the contract.'],
+            ['className', InputArgument::REQUIRED],
+            ['directoryName', InputArgument::REQUIRED],
         ];
     }
 }

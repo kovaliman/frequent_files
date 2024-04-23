@@ -1,60 +1,49 @@
 <?php
 
-
 namespace {{ namespace }};
 
-
-use {{ repository_path }};
+use {{ interfaceImport }};
+use {{ createDTOImport }};
+use {{ updateDTOImport }};
+use App\{{ directoryName }}\General\Services\Search\SearchService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class {{ class }}
+class ActivityLogService extends SearchService
 {
-    /**
-     * @var {{ repository }}
-     */
-    public ${{ repoVar }};
+    private {{ interfaceClassName }} ${{ interfaceVar }};
 
-    /**
-     * @var SearchService
-     */
-    public $searchService;
-
-    public function __construct({{ repository }} ${{ repoVar }})
+    public function __construct({{ interfaceClassName }} ${{ interfaceVar }})
     {
-        $this->{{ repoVar }} = ${{ repoVar }};
+        $this->{{ interfaceVar }} = ${{ interfaceVar }};
     }
 
-    /**
-     * @param array $data
-     * @return Model
-     * @throws \Exception
-     */
-    public function create(array $data): Model
+    public function create({{ createDataClass }} $createData): Model
     {
-        if(!$model = $this->{{ repo_var }}->create($data)) throw new \Exception("Can't create model");
-
-        return $model;
+        return $this->{{ interfaceVar }}->create([
+            //todo
+        ]);
     }
 
-    /**
-     * @param int $id
-     * @param array $data
-     * @return Model
-     * @throws \Exception
-     */
-    public function update(int $id, array $data): Model
+    public function update({{ updateDataClass }} $updateData): Model
     {
-        if(!$model = $this->{{ repo_var }}->update($this->searchService->byId($id), $data)) throw new \Exception("Can't update model");
-
-        return $model;
+        return $this->{{ interfaceVar }}->update($updateData->{{ modelVar }}, [
+            //todo
+        ]);
     }
 
-    /**
-     * @param int $id
-     * @throws \Exception
-     */
-    public function delete(int $id): void
+    protected function getQuery(array $data, array $with = []): Builder
     {
-        if(!$model = $this->{{ repo_var }}->delete($this->searchService->byId($id))) throw new \Exception("Can't delete model");
+        /** @var Builder $query */
+        $query = $this->{{ interfaceVar }}->getModel()::query();
+
+        $query->with($with);
+
+        return $query;
+    }
+
+    public function getById(int $id, array $with = []): ?Model
+    {
+        return $this->{{ interfaceVar }}->getFirst(['id' => $id], $with);
     }
 }

@@ -2,57 +2,18 @@
 
 namespace {{ namespace }};
 
-use {{ importConcrete }}{{ concrete }}Repository;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use {{ trait_namespace }};
+use App\Models\{{ model }};
+use App\{{ directoryName }}\General\Traits\CrudableEloquent;
+use {{ interfaceImport }};
 
-class {{ class }} implements {{ concrete }}Repository
+class EloquentRepository implements {{ interfaceClassName }}
 {
-    /**
-     * @return string
-     */
-    public function get(): string
+    use CrudableEloquent;
+
+    public function getModel(): string
     {
-        //todo
+        return {{ model }}::class;
     }
 
-    /**
-     * @return Collection
-     */
-    public function get(): Collection
-    {
-        return $this->getModel()::get();
-    }
 
-    /**
-     * @param array $data
-     * @return Model
-     */
-    public function create(array $data): Model
-    {
-        return $this->getModel()::create($data);
-    }
-
-    /**
-     * @param Model $model
-     * @param array $data
-     * @return Model
-     */
-    public function update(Model $model, array $data): Model
-    {
-        $model->update($data);
-
-        return $model->refresh();
-    }
-
-    /**
-     * @param Model $model
-     * @return bool
-     * @throws \Exception
-     */
-    public function delete(Model $model): bool
-    {
-        return $model->delete();
-    }
 }

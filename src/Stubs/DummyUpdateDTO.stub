@@ -1,0 +1,12 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\{{ directoryName }}\General\DataTransferObject;
+use Illuminate\Database\Eloquent\Model;
+
+class UpdateData extends DataTransferObject
+{
+    public ?Model ${{ modelVar }} = null;
+    //todo
+}

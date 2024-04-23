@@ -15,7 +15,7 @@ class GenerateModule extends Command
      *
      * @var string
      */
-    protected $signature = 'generate:module {name}';
+    protected $signature = 'generate:module';
 
     /**
      * The console command description.
@@ -41,20 +41,101 @@ class GenerateModule extends Command
      */
     public function handle()
     {
-        Artisan::call('make:interface', [
-            'name' => "App\\".env('APP_NAME')."\\".$this->argument('name')."\\Contracts\\".Str::singular($this->argument('name'))."Repository"
-        ]);
+        try {
+            $directoryName = ucfirst(strtolower($this->ask('Direcory name?')));
 
-        Artisan::call('make:concrete', [
-            'name' => "App\\".env('APP_NAME')."\\".$this->argument('name')."\\Repositories\\EloquentRepository"
-        ]);
+            $moduleName = ucfirst(Str::camel(Str::singular(strtolower($this->ask('Module name?')))));
 
-        Artisan::call('make:service', [
-            'name' => "App\\".env('APP_NAME')."\\".$this->argument('name')."\\Services\\".Str::singular($this->argument('name'))."Service"
-        ]);
+            $moduleVar = Str::camel($moduleName);
 
-        Artisan::call('make:trait', [
-            'name' => "App\\".env('APP_NAME')."\\".$this->argument('name')."\\Traits\ModelTrait"
-        ]);
+            $wantController = $this->confirm('Do you want controller');
+
+            $wantModel = $this->confirm('Do you want model');
+
+            if ($wantModel) {
+                Artisan::call('make:model ' . $moduleName . ' -s -f -m');
+            }
+
+
+            if ($wantController) {
+                $controllerDirectory = $this->ask('In which directory should set controller');
+                $wantRoutes = $this->confirm('Do you want GET, POST and PATCH routes');
+            }
+
+            $interfaceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Contracts";
+            $interfaceClassName = $moduleName . "Repository";
+            $interfaceVar = lcfirst($moduleName);
+            $interaceImport = $interfaceNamespace . "\\" . $interfaceClassName;
+
+            $repositoryNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Repositories\\EloquentRepository";
+            $repositoryClassName = "EloquentRepository";
+
+            $serviceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Services";
+            $serviceClassName = $moduleName . "Service";
+            $serviceImport = $serviceNamespace .'\\'.$serviceClassName;
+
+            $createDTONamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\DTO";
+            $createDTOClassName = "CreateData";
+            $createDTOImport = $createDTONamespace.'\\'.$createDTOClassName;
+            
+            $updateDTONamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\DTO";
+            $updateDTOClassName = "UpdateData";
+            $updateDTOImport = $updateDTONamespace.'\\'.$updateDTOClassName;
+
+//        dd($interfaceNamespace, $interfaceClassName, $repositoryNamespace, $repositoryClassName, $serviceNamespace, $serviceClassName, $createDTONamespace, $createDTOClassName, $updateDTONamespace, $updateDTOClassName);
+
+            Artisan::call('make:interface', [
+                'name' => $interfaceClassName,
+                'namespace' => $interfaceNamespace,
+                'className' => $interfaceClassName,
+                'directoryName' => $directoryName,
+            ]);
+
+            Artisan::call('make:concrete', [
+                'name' => $repositoryNamespace,
+                'namespace' => $repositoryNamespace,
+                'interfaceClassName' => $interfaceClassName,
+                'interfaceNamespace' => $interfaceNamespace,
+                'model' => $moduleName,
+                'interfaceImport' => $interaceImport,
+                'directoryName' => $directoryName,
+            ]);
+
+            Artisan::call('make:service', [
+                'name' => $serviceClassName,
+                'namespace' => $serviceNamespace,
+                'class' => $serviceClassName,
+                'interfaceNamespace' => $interfaceNamespace,
+                'interfaceClassName' => $interfaceClassName,
+                'model' => $moduleName,
+                'createDataNamespace' => $createDTONamespace,
+                'createDataClass' => $createDTOClassName,
+                'updateDataNamespace' => $updateDTONamespace,
+                'updateDataClass' => $updateDTOClassName,
+                'interfaceVar' => $interfaceVar,
+                'interfaceImport' => $interaceImport,
+                'directoryName' => $directoryName,
+                'createDTOImport' => $createDTOImport,
+                'updateDTOImport' => $updateDTOImport,
+                'modelVar' => $moduleVar,
+            ]);
+
+            Artisan::call('make:create-dto', [
+                'name' => $createDTOClassName,
+                'namespace' => $createDTONamespace,
+                'directoryName' => $directoryName,
+            ]);
+
+            Artisan::call('make:update-dto', [
+                'name' => $updateDTOClassName,
+                'namespace' => $updateDTONamespace,
+                'directoryName' => $directoryName,
+                'model' => $moduleName,
+                'modelVar' => $moduleVar,
+            ]);
+        } catch (\Exception $exception) {
+            dd($exception);
+        }
+
     }
 }

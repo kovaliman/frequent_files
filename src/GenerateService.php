@@ -3,6 +3,7 @@
 namespace KovaLiman\FrequentlyFiles;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -33,31 +34,24 @@ class GenerateService extends GeneratorCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        return $this->replaceNamespace($stub, $name)
-            ->replaceRepository($stub, $name)
-            ->replaceClass($stub, $name);
-    }
+        $stub = str_replace('{{ namespace }}', $this->argument('namespace'), $stub);
+        $stub = str_replace('{{ class }}', $this->argument('class'), $stub);
+        $stub = str_replace('{{ interfaceNamespace }}', $this->argument('interfaceNamespace'), $stub);
+        $stub = str_replace('{{ interfaceClassName }}', $this->argument('interfaceClassName'), $stub);
+        $stub = str_replace('{{ model }}', $this->argument('model'), $stub);
+        $stub = str_replace('{{ createDataNamespace }}', $this->argument('createDataNamespace'), $stub);
+        $stub = str_replace('{{ createDataClass }}', $this->argument('createDataClass'), $stub);
+        $stub = str_replace('{{ updateDataNamespace }}', $this->argument('updateDataNamespace'), $stub);
+        $stub = str_replace('{{ updateDataClass }}', $this->argument('updateDataClass'), $stub);
+        $stub = str_replace('{{ updateDataClass }}', $this->argument('updateDataClass'), $stub);
+        $stub = str_replace('{{ interfaceVar }}', $this->argument('interfaceVar'), $stub);
+        $stub = str_replace('{{ interfaceImport }}', $this->argument('interfaceImport'), $stub);
+        $stub = str_replace('{{ directoryName }}', $this->argument('directoryName'), $stub);
+        $stub = str_replace('{{ createDTOImport }}', $this->argument('createDTOImport'), $stub);
+        $stub = str_replace('{{ updateDTOImport }}', $this->argument('updateDTOImport'), $stub);
+        $stub = str_replace('{{ modelVar }}', $this->argument('modelVar'), $stub);
 
-    protected function replaceRepository(&$stub, $name)
-    {
-        $verb = array_slice(explode("\\", $name), '-3', '1')[0];
-
-        $singular = Str::singular($verb);
-
-        $repo_var = Str::lower($singular) . "Repository";
-
-        $repo = $singular . "Repository";
-
-        $repo_path = "App\\" . env('APP_NAME') . "\\" . $verb . "\\Contracts\\" . $repo;
-
-        $stub = str_replace('{{ repo_var }}', $repo_var, $stub);
-
-        $stub = str_replace('{{ repository }}', $repo, $stub);
-
-        $stub = str_replace('{{ repository_path }}', $repo_path, $stub);
-
-
-        return $this;
+        return $this->replaceClass($stub, $name);
     }
 
     /**
@@ -92,7 +86,7 @@ class GenerateService extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Services';
+        return $this->argument('namespace');
     }
 
     /**
@@ -104,6 +98,21 @@ class GenerateService extends GeneratorCommand
     {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the contract.'],
+            ['namespace', InputArgument::REQUIRED],
+            ['class', InputArgument::REQUIRED],
+            ['interfaceNamespace', InputArgument::REQUIRED],
+            ['interfaceClassName', InputArgument::REQUIRED],
+            ['model', InputArgument::REQUIRED],
+            ['createDataNamespace', InputArgument::REQUIRED],
+            ['createDataClass', InputArgument::REQUIRED],
+            ['updateDataNamespace', InputArgument::REQUIRED],
+            ['updateDataClass', InputArgument::REQUIRED],
+            ['interfaceVar', InputArgument::REQUIRED],
+            ['interfaceImport', InputArgument::REQUIRED],
+            ['directoryName', InputArgument::REQUIRED],
+            ['createDTOImport', InputArgument::REQUIRED],
+            ['updateDTOImport', InputArgument::REQUIRED],
+            ['modelVar', InputArgument::REQUIRED],
         ];
     }
 }
