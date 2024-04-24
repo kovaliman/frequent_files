@@ -1,0 +1,48 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use {{ createRequestImport }};
+use {{ updateRequestImport }};
+use {{ createDTOImport }};
+use {{ updateDTOImport }};
+use {{ serviceImport }};
+
+class {{ class }} extends Controller
+{
+    private {{ serviceName }} ${{ serviceVar }};
+
+    public function __construct({{ serviceName }} ${{ serviceVar }})
+    {
+        $this->{{ serviceVar }} = ${{ serviceVar }};
+    }
+
+    public function index(Request $request): JsonResponse
+    {
+        return response()->json($this->{{ serviceVar }}->get($request->all()));
+    }
+
+    public function get($id): JsonResponse
+    {
+        //ValidateInteger::checkId($id);
+
+        return response()->json($this->{{ serviceVar }}->getById($id));
+    }
+
+    public function create(CreateRequest $request): JsonResponse
+    {
+        return response()->json($this->{{ serviceVar }}->create(new CreateData($request->validated())));
+    }
+
+    public function update(UpdateRequest $request): JsonResponse
+    {
+        ${{ modelVar }} = $this->{{ serviceVar }}->update(new UpdateData(array_merge($request->validated(), [
+            '{{ modelVar }}' => $request->{{ modelVar }}
+        ])));
+
+        return response()->json(${{ modelVar }});
+    }
+}

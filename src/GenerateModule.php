@@ -58,8 +58,12 @@ class GenerateModule extends Command
 
 
             if ($wantController) {
-                $controllerDirectory = $this->ask('In which directory should set controller');
-                $wantRoutes = $this->confirm('Do you want GET, POST and PATCH routes');
+//                $controllerDirectory = $this->ask('In which directory should set controller');
+//                $wantRoutes = $this->confirm('Do you want GET, POST and PATCH routes');
+                $controllerName = $moduleName.'Controller';
+                $controllerNamespace = 'App\\Http\\Controllers\\'.$controllerName;
+                $createRequestImport = 'App\\Http\\Requests\\'.$moduleName.'\\CreateRequest';
+                $updateRequestImport = 'App\\Http\\Requests\\'.$moduleName.'\\UpdateRequest';
             }
 
             $interfaceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Contracts";
@@ -73,17 +77,37 @@ class GenerateModule extends Command
             $serviceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Services";
             $serviceClassName = $moduleName . "Service";
             $serviceImport = $serviceNamespace .'\\'.$serviceClassName;
-
+            $serviceVar = lcfirst($serviceClassName);
+            
             $createDTONamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\DTO";
             $createDTOClassName = "CreateData";
             $createDTOImport = $createDTONamespace.'\\'.$createDTOClassName;
-            
+
             $updateDTONamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\DTO";
             $updateDTOClassName = "UpdateData";
             $updateDTOImport = $updateDTONamespace.'\\'.$updateDTOClassName;
 
 //        dd($interfaceNamespace, $interfaceClassName, $repositoryNamespace, $repositoryClassName, $serviceNamespace, $serviceClassName, $createDTONamespace, $createDTOClassName, $updateDTONamespace, $updateDTOClassName);
 
+            if ($wantController) {
+                Artisan::call('make:request ' . $moduleName . '/CreateRequest');
+                Artisan::call('make:request ' . $moduleName . '/UpdateRequest');
+                
+                Artisan::call('make:ff-controller', [
+                    'name' => $controllerName,
+                    'class' => $controllerName,
+                    'namespace' => $controllerNamespace,
+                    'createDTOImport' => $createDTOImport,
+                    'updateDTOImport' => $updateDTOImport,
+                    'modelVar' => $moduleVar,
+                    'serviceName' => $serviceClassName,
+                    'serviceVar' => $serviceVar,
+                    'createRequestImport' => $createRequestImport,
+                    'updateRequestImport' => $updateRequestImport,
+                    'serviceImport' => $serviceImport,
+                ]);
+            }
+            
             Artisan::call('make:interface', [
                 'name' => $interfaceClassName,
                 'namespace' => $interfaceNamespace,
@@ -133,6 +157,9 @@ class GenerateModule extends Command
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
             ]);
+
+           
+
         } catch (\Exception $exception) {
             dd($exception);
         }

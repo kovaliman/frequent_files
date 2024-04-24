@@ -9,7 +9,7 @@ use App\{{ directoryName }}\General\Services\Search\SearchService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class ActivityLogService extends SearchService
+class {{ class }} extends SearchService
 {
     private {{ interfaceClassName }} ${{ interfaceVar }};
 
