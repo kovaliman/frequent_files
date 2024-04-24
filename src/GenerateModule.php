@@ -51,21 +51,20 @@ class GenerateModule extends Command
             $wantController = $this->confirm('Do you want controller');
 
             $wantModel = $this->confirm('Do you want model');
-
-            if ($wantModel) {
-                Artisan::call('make:model ' . $moduleName . ' -s -f -m');
-            }
-
-
             if ($wantController) {
-//                $controllerDirectory = $this->ask('In which directory should set controller');
+                $controllerDirectory = $this->ask('In which directory should set controller');
 //                $wantRoutes = $this->confirm('Do you want GET, POST and PATCH routes');
                 $controllerName = $moduleName.'Controller';
-                $controllerNamespace = 'App\\Http\\Controllers\\'.$controllerName;
+                $additionalDirectory = $controllerDirectory ? '\\'.$controllerDirectory : '';
+                $controllerNamespace = 'App\\Http\\Controllers' . $additionalDirectory;
                 $createRequestImport = 'App\\Http\\Requests\\'.$moduleName.'\\CreateRequest';
                 $updateRequestImport = 'App\\Http\\Requests\\'.$moduleName.'\\UpdateRequest';
             }
-
+            
+            if ($wantModel) {
+                Artisan::call('make:model ' . $moduleName . ' -s -f -m');
+            }
+            
             $interfaceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Contracts";
             $interfaceClassName = $moduleName . "Repository";
             $interfaceVar = lcfirst($moduleName);
@@ -86,9 +85,7 @@ class GenerateModule extends Command
             $updateDTONamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\DTO";
             $updateDTOClassName = "UpdateData";
             $updateDTOImport = $updateDTONamespace.'\\'.$updateDTOClassName;
-
-//        dd($interfaceNamespace, $interfaceClassName, $repositoryNamespace, $repositoryClassName, $serviceNamespace, $serviceClassName, $createDTONamespace, $createDTOClassName, $updateDTONamespace, $updateDTOClassName);
-
+            
             if ($wantController) {
                 Artisan::call('make:request ' . $moduleName . '/CreateRequest');
                 Artisan::call('make:request ' . $moduleName . '/UpdateRequest');
