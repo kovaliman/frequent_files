@@ -70,7 +70,7 @@ class GenerateModule extends Command
             $interfaceVar = lcfirst($moduleName);
             $interaceImport = $interfaceNamespace . "\\" . $interfaceClassName;
 
-            $repositoryNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Repositories\\EloquentRepository";
+            $repositoryNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Repositories";
             $repositoryClassName = "EloquentRepository";
 
             $serviceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Services";
