@@ -113,7 +113,7 @@ class GenerateModule extends Command
             ]);
 
             Artisan::call('make:concrete', [
-                'name' => $repositoryNamespace,
+                'name' => $repositoryClassName,
                 'namespace' => $repositoryNamespace,
                 'interfaceClassName' => $interfaceClassName,
                 'interfaceNamespace' => $interfaceNamespace,
