@@ -54,17 +54,17 @@ class GenerateModule extends Command
             if ($wantController) {
                 $controllerDirectory = $this->ask('In which directory should set controller');
 //                $wantRoutes = $this->confirm('Do you want GET, POST and PATCH routes');
-                $controllerName = $moduleName.'Controller';
-                $additionalDirectory = $controllerDirectory ? '\\'.$controllerDirectory : '';
+                $controllerName = $moduleName . 'Controller';
+                $additionalDirectory = $controllerDirectory ? '\\' . $controllerDirectory : '';
                 $controllerNamespace = 'App\\Http\\Controllers' . $additionalDirectory;
-                $createRequestImport = 'App\\Http\\Requests\\'.$moduleName.'\\CreateRequest';
-                $updateRequestImport = 'App\\Http\\Requests\\'.$moduleName.'\\UpdateRequest';
+                $createRequestImport = 'App\\Http\\Requests\\' . $moduleName . '\\CreateRequest';
+                $updateRequestImport = 'App\\Http\\Requests\\' . $moduleName . '\\UpdateRequest';
             }
-            
+
             if ($wantModel) {
                 Artisan::call('make:model ' . $moduleName . ' -s -f -m');
             }
-            
+
             $interfaceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Contracts";
             $interfaceClassName = $moduleName . "Repository";
             $interfaceVar = lcfirst($moduleName) . "Repository";
@@ -75,21 +75,21 @@ class GenerateModule extends Command
 
             $serviceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Services";
             $serviceClassName = $moduleName . "Service";
-            $serviceImport = $serviceNamespace .'\\'.$serviceClassName;
+            $serviceImport = $serviceNamespace . '\\' . $serviceClassName;
             $serviceVar = lcfirst($serviceClassName);
-            
+
             $createDTONamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\DTO";
             $createDTOClassName = "CreateData";
-            $createDTOImport = $createDTONamespace.'\\'.$createDTOClassName;
+            $createDTOImport = $createDTONamespace . '\\' . $createDTOClassName;
 
             $updateDTONamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\DTO";
             $updateDTOClassName = "UpdateData";
-            $updateDTOImport = $updateDTONamespace.'\\'.$updateDTOClassName;
-            
+            $updateDTOImport = $updateDTONamespace . '\\' . $updateDTOClassName;
+
             if ($wantController) {
                 Artisan::call('make:request ' . $moduleName . '/CreateRequest');
                 Artisan::call('make:request ' . $moduleName . '/UpdateRequest');
-                
+
                 Artisan::call('make:ff-controller', [
                     'name' => $controllerName,
                     'class' => $controllerName,
@@ -105,7 +105,7 @@ class GenerateModule extends Command
                     'model' => $moduleName,
                 ]);
             }
-            
+
             Artisan::call('make:interface', [
                 'name' => $interfaceClassName,
                 'namespace' => $interfaceNamespace,
@@ -156,7 +156,21 @@ class GenerateModule extends Command
                 'modelVar' => $moduleVar,
             ]);
 
-           
+            $routeName = Str::plural(lcfirst($moduleName));
+            $indexRoute = 'api.' . $routeName . '.index';
+            $getRoute = 'api.' . $routeName . '.get';
+            $postRoute = 'api.' . $routeName . '.create';
+            $patchRoute = 'api.' . $routeName . '.update';
+
+            Artisan::call('make:routes', [
+                'routeName' => $routeName,
+                'index' => $indexRoute,
+                'get' => $getRoute,
+                'post' => $postRoute,
+                'patch' => $patchRoute,
+                'controllerNamespace' => '\\'.$controllerNamespace . '\\' . $controllerName . '::class',
+                'model' => lcfirst($moduleName),
+            ]);
 
         } catch (\Exception $exception) {
             dd($exception);
