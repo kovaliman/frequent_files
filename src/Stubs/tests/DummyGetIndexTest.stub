@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\User;
 
 class GetIndexTest extends TestCase
 {

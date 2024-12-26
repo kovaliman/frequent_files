@@ -44,26 +44,21 @@ class GenerateModule extends Command
         try {
             $directoryName = ucfirst(strtolower($this->ask('Direcory name?')));
 
-            $moduleName = ucfirst(Str::camel(Str::singular(strtolower($this->ask('Module name?')))));
+//            $moduleName = ucfirst(Str::camel(Str::singular(strtolower($this->ask('Module name?')))));
+            $moduleName = $this->ask('Module name?');
 
-            $moduleVar = Str::camel($moduleName);
+            $moduleVar = lcfirst($moduleName);
 
-            $wantController = $this->confirm('Do you want controller');
 
-            $wantModel = $this->confirm('Do you want model');
-            if ($wantController) {
+//            $wantModel = $this->confirm('Do you want model');
+
                 $controllerDirectory = $this->ask('In which directory should set controller');
-//                $wantRoutes = $this->confirm('Do you want GET, POST and PATCH routes');
                 $controllerName = $moduleName . 'Controller';
                 $additionalDirectory = $controllerDirectory ? '\\' . $controllerDirectory : '';
                 $controllerNamespace = 'App\\Http\\Controllers' . $additionalDirectory;
                 $createRequestImport = 'App\\Http\\Requests\\' . $moduleName . '\\CreateRequest';
                 $updateRequestImport = 'App\\Http\\Requests\\' . $moduleName . '\\UpdateRequest';
-            }
 
-            if ($wantModel) {
-                Artisan::call('make:model ' . $moduleName . ' -s -f -m');
-            }
 
             $interfaceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Contracts";
             $interfaceClassName = $moduleName . "Repository";
@@ -86,7 +81,8 @@ class GenerateModule extends Command
             $updateDTOClassName = "UpdateData";
             $updateDTOImport = $updateDTONamespace . '\\' . $updateDTOClassName;
 
-            if ($wantController) {
+            Artisan::call('make:model ' . $moduleName . ' -s -f -m');
+
                 Artisan::call('make:request ' . $moduleName . '/CreateRequest');
                 Artisan::call('make:request ' . $moduleName . '/UpdateRequest');
 
@@ -104,7 +100,6 @@ class GenerateModule extends Command
                     'serviceImport' => $serviceImport,
                     'model' => $moduleName,
                 ]);
-            }
 
             Artisan::call('make:interface', [
                 'name' => $interfaceClassName,
@@ -156,7 +151,8 @@ class GenerateModule extends Command
                 'modelVar' => $moduleVar,
             ]);
 
-            $routeName = Str::plural(lcfirst($moduleName));
+            $routeName = Str::kebab($moduleName);
+
             $indexRoute = 'api.' . $routeName . '.index';
             $getRoute = 'api.' . $routeName . '.get';
             $postRoute = 'api.' . $routeName . '.create';
