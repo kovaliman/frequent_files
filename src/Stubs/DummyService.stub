@@ -44,6 +44,6 @@ class {{ class }} extends SearchService
 
     public function getById(int $id, array $with = []): ?Model
     {
-        return $this->{{ interfaceVar }}->getFirst(['id' => $id], $with);
+        return $this->getFirst(['id' => $id], $with);
     }
 }

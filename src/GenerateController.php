@@ -44,6 +44,7 @@ class GenerateController extends GeneratorCommand
         $stub = str_replace('{{ createRequestImport }}', $this->argument('createRequestImport'), $stub);
         $stub = str_replace('{{ updateRequestImport }}', $this->argument('updateRequestImport'), $stub);
         $stub = str_replace('{{ serviceImport }}', $this->argument('serviceImport'), $stub);
+        $stub = str_replace('{{ model }}', $this->argument('model'), $stub);
 
         return $this->replaceClass($stub, $name);
     }
@@ -102,6 +103,7 @@ class GenerateController extends GeneratorCommand
             ['createRequestImport', InputArgument::REQUIRED],
             ['updateRequestImport', InputArgument::REQUIRED],
             ['serviceImport', InputArgument::REQUIRED],
+            ['model', InputArgument::REQUIRED]
         ];
     }
 }

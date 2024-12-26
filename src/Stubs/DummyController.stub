@@ -10,6 +10,7 @@ use {{ updateRequestImport }};
 use {{ createDTOImport }};
 use {{ updateDTOImport }};
 use {{ serviceImport }};
+use App\Models\{{ model }};
 
 class {{ class }} extends Controller
 {
@@ -25,24 +26,24 @@ class {{ class }} extends Controller
         return response()->json($this->{{ serviceVar }}->get($request->all()));
     }
 
-    public function get($id): JsonResponse
+    public function get({{ model }} ${{ modelVar }}): JsonResponse
     {
-        //ValidateInteger::checkId($id);
-
-        return response()->json($this->{{ serviceVar }}->getById($id));
+        return response()->json(${{ modelVar }});
     }
 
     public function create(CreateRequest $request): JsonResponse
     {
-        return response()->json($this->{{ serviceVar }}->create(new CreateData($request->validated())));
+        $responseData = $this->{{ serviceVar }}->create(new CreateData($request->validated()));
+
+        return response()->json($responseData);
     }
 
-    public function update(UpdateRequest $request): JsonResponse
+    public function update({{ model }} ${{ modelVar }}, UpdateRequest $request): JsonResponse
     {
-        ${{ modelVar }} = $this->{{ serviceVar }}->update(new UpdateData(array_merge($request->validated(), [
-            '{{ modelVar }}' => $request->{{ modelVar }}
+        $responseData = $this->{{ serviceVar }}->update(new UpdateData(array_merge($request->validated(), [
+            '{{ modelVar }}' => ${{ modelVar }}
         ])));
 
-        return response()->json(${{ modelVar }});
+        return response()->json($responseData);
     }
 }

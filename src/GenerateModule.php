@@ -67,7 +67,7 @@ class GenerateModule extends Command
             
             $interfaceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Contracts";
             $interfaceClassName = $moduleName . "Repository";
-            $interfaceVar = lcfirst($moduleName);
+            $interfaceVar = lcfirst($moduleName) . "Repository";
             $interaceImport = $interfaceNamespace . "\\" . $interfaceClassName;
 
             $repositoryNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Repositories";
@@ -102,6 +102,7 @@ class GenerateModule extends Command
                     'createRequestImport' => $createRequestImport,
                     'updateRequestImport' => $updateRequestImport,
                     'serviceImport' => $serviceImport,
+                    'model' => $moduleName,
                 ]);
             }
             
