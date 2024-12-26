@@ -172,6 +172,59 @@ class GenerateModule extends Command
                 'model' => lcfirst($moduleName),
             ]);
 
+            Artisan::call('make:index-test', [
+                'name' => "Tests\Feature\\".$moduleName."\GetIndexTest",
+                'namespace' => "Tests\Feature\\".$moduleName,
+                'model' => $moduleName,
+                'modelVar' => $moduleVar,
+                'route' => $indexRoute,
+                'modelNamespace' => 'App\\Models\\'.$moduleName
+            ]);
+
+            Artisan::call('make:get-test', [
+                'name' => "Tests\Feature\\".$moduleName."\GetByIdTest",
+                'namespace' => "Tests\Feature\\".$moduleName,
+                'model' => $moduleName,
+                'modelVar' => $moduleVar,
+                'route' => $getRoute,
+                'modelNamespace' => 'App\\Models\\'.$moduleName
+            ]);
+
+            Artisan::call('make:create-test', [
+                'name' => "Tests\Feature\\".$moduleName."\CreateTest",
+                'namespace' => "Tests\Feature\\".$moduleName,
+                'model' => $moduleName,
+                'modelVar' => $moduleVar,
+                'route' => $postRoute,
+                'modelNamespace' => 'App\\Models\\'.$moduleName
+            ]);
+
+            Artisan::call('make:update-test', [
+                'name' => "Tests\Feature\\".$moduleName."\UpdateTest",
+                'namespace' => "Tests\Feature\\".$moduleName,
+                'model' => $moduleName,
+                'modelVar' => $moduleVar,
+                'route' => $patchRoute,
+                'modelNamespace' => 'App\\Models\\'.$moduleName
+            ]);
+
+            Artisan::call('make:create-validation-test', [
+                'name' => "Tests\Feature\\".$moduleName."\CreateValidationTest",
+                'namespace' => "Tests\Feature\\".$moduleName,
+                'model' => $moduleName,
+                'modelVar' => $moduleVar,
+                'route' => $postRoute,
+                'modelNamespace' => 'App\\Models\\'.$moduleName
+            ]);
+
+            Artisan::call('make:update-validation-test', [
+                'name' => "Tests\Feature\\".$moduleName."\UpdateValidationTest",
+                'namespace' => "Tests\Feature\\".$moduleName,
+                'model' => $moduleName,
+                'modelVar' => $moduleVar,
+                'route' => $patchRoute,
+                'modelNamespace' => 'App\\Models\\'.$moduleName
+            ]);
         } catch (\Exception $exception) {
             dd($exception);
         }

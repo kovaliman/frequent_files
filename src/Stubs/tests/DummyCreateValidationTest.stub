@@ -1,0 +1,28 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ modelNamespace }};
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
+use App\Models\User;
+
+class CreateValidationTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_success()
+    {
+        $loggedUser = User::factory()->create();
+
+        Sanctum::actingAs($loggedUser);
+
+        $response = $this->json('post', route('{{ route }}'), [
+
+        ]);
+
+        $response->assertStatus(422);
+
+    }
+}
