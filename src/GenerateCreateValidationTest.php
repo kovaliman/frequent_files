@@ -21,7 +21,7 @@ class GenerateCreateValidationTest extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a basic model service';
+    protected $description = 'Create CreateValidation Test';
 
     /**
      * The type of class being generated.
