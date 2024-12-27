@@ -123,15 +123,15 @@ class GenerateService extends GeneratorCommand
     public function createData()
     {
         $properties = $this->argument('properties');
-        $total = count($properties)-1;
-        if (!count($properties)){
+        $total = count($properties);
+        if (!count($properties)) {
             return '//todo';
         }
         $data = '';
-        for ($i = 0; $i<=$total-1; $i++){
+        for ($i = 0; $i <= $total - 1; $i++) {
             $name = $properties[$i]->name;
-            $data .= "'$name' => $" . "createData->".$name.",";
-            if ($i<$total){
+            $data .= "'$name' => $" . "createData->" . $name . ",";
+            if ($i < $total - 1) {
                 $data .= "\n\t\t\t";
             }
         }
@@ -141,15 +141,15 @@ class GenerateService extends GeneratorCommand
     public function updateData()
     {
         $properties = $this->argument('properties');
-        $total = count($properties)-1;
-        if (!count($properties)){
+        $total = count($properties);
+        if (!count($properties)) {
             return '//todo';
         }
         $data = '';
-        for ($i = 0; $i<=$total-1; $i++){
+        for ($i = 0; $i <= $total - 1; $i++) {
             $name = $properties[$i]->name;
-            $data .= "'$name' => $" . "updateData->".$name." ?? $"."updateData->".$this->argument('modelVar')."->".$name.",";
-            if ($i<$total){
+            $data .= "'$name' => $" . "updateData->" . $name . " ?? $" . "updateData->" . $this->argument('modelVar') . "->" . $name . ",";
+            if ($i < $total - 1) {
                 $data .= "\n\t\t\t";
             }
         }
