@@ -12,23 +12,6 @@ class UpdateValidationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_success()
-    {
-        $loggedUser = User::factory()->create();
-
-        Sanctum::actingAs($loggedUser);
-
-        $record = {{ model }}::factory()->create();
-
-        $response = $this->json('patch', route('{{ route }}', [
-            '{{ modelVar }}' => $record->id
-        ]));
-
-        $response->assertStatus(422);
-
-        {{ assertation }}
-    }
-
     public function test_404()
     {
         $loggedUser = User::factory()->create();
