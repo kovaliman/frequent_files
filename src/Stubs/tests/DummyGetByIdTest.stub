@@ -20,9 +20,9 @@ class GetByIdTest extends TestCase
 
         $record = {{ model }}::factory()->create();
 
-        $response = $this->json('get', route('{{ route }}'), [
+        $response = $this->json('get', route('{{ route }}', [
             '{{ modelVar }}' => $record->id
-        ]);
+        ]));
 
         $response->assertStatus(200);
 
@@ -37,9 +37,9 @@ class GetByIdTest extends TestCase
 
         $record = {{ model }}::factory()->create();
 
-        $response = $this->json('get', route('{{ route }}'), [
+        $response = $this->json('get', route('{{ route }}', [
             '{{ modelVar }}' => 0
-        ]);
+        ]));
 
         $response->assertStatus(404);
     }

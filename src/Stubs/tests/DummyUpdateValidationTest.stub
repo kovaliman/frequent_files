@@ -20,9 +20,9 @@ class UpdateValidationTest extends TestCase
 
         $record = {{ model }}::factory()->create();
 
-        $response = $this->json('patch', route('{{ route }}'), [
+        $response = $this->json('patch', route('{{ route }}', [
             '{{ modelVar }}' => $record->id
-        ]);
+        ]));
 
         $response->assertStatus(422);
 
@@ -37,9 +37,9 @@ class UpdateValidationTest extends TestCase
 
         $record = {{ model }}::factory()->create();
 
-        $response = $this->json('patch', route('{{ route }}'), [
+        $response = $this->json('patch', route('{{ route }}', [
             '{{ modelVar }}' => 0
-        ]);
+        ]));
 
         $response->assertStatus(404);
     }

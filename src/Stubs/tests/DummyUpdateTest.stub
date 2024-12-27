@@ -24,9 +24,9 @@ class UpdateTest extends TestCase
             {{ updateData }}
         ];
 
-        $response = $this->json('patch', route('{{ route }}'), [
+        $response = $this->json('patch', route('{{ route }}', [
             '{{ modelVar }}' => $record->id
-        ], $data);
+        ]), $data);
 
         $response->assertStatus(200);
 
