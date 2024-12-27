@@ -3,9 +3,6 @@
     "description": "Frequently used files",
     "license": "MIT",
     "minimum-stability": "dev",
-    "require": {
-        "laravel/prompts": "0.3.x-dev"
-    },
     "autoload": {
         "psr-4": {
             "KovaLiman\\FrequentlyFiles\\": "src/"
@@ -23,5 +20,8 @@
             "name": "Dragan Kovacevic",
             "email": "dragankovacevic1982@gmail.com"
         }
-    ]
+    ],
+    "require": {
+        "laravel/prompts": "0.3.2"
+    }
 }
