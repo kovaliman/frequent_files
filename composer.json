@@ -20,8 +20,5 @@
             "name": "Dragan Kovacevic",
             "email": "dragankovacevic1982@gmail.com"
         }
-    ],
-    "require": {
-        "laravel/prompts": "0.3.2"
-    }
+    ]
 }
