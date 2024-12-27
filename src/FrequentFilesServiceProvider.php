@@ -40,6 +40,8 @@ class FrequentFilesServiceProvider extends ServiceProvider
             GenerateUpdateTest::class,
             GenerateCreateValidationTest::class,
             GenerateUpdateValidationTest::class,
+            GenerateCreateRequest::class,
+            GenerateUpdateRequest::class,
         ]);
     }
 }

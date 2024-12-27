@@ -84,8 +84,17 @@ class GenerateModule extends Command
 
             Artisan::call('make:model ' . $moduleName . ' -s -f -m');
 
-            Artisan::call('make:request ' . $moduleName . '/CreateRequest');
-            Artisan::call('make:request ' . $moduleName . '/UpdateRequest');
+            Artisan::call('make:create-request', [
+                'name' => 'CreateRequest',
+                'namespace' =>  "App\\Http\\Requests\\" . $moduleName,
+                'properties' => $properties
+            ]);
+
+            Artisan::call('make:update-request', [
+                'name' => 'UpdateRequest',
+                'namespace' =>  "App\\Http\\Requests\\" . $moduleName,
+                'properties' => $properties
+            ]);
 
             Artisan::call('make:ff-controller', [
                 'name' => $controllerName,
