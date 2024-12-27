@@ -24,6 +24,6 @@ class GetIndexTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertTrue($response->original->count() === 2);
+        $this->assertTrue($response->original->count() === 1);
     }
 }
