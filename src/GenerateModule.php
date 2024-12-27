@@ -42,22 +42,18 @@ class GenerateModule extends Command
     public function handle()
     {
         try {
-            $directoryName = ucfirst(strtolower($this->ask('Direcory name?')));
+            $directoryName = config('frequent-files.directory');
+            $controllerDirectory = config('frequent-files.controller_directory');
 
-//            $moduleName = ucfirst(Str::camel(Str::singular(strtolower($this->ask('Module name?')))));
             $moduleName = $this->ask('Module name?');
 
             $moduleVar = lcfirst($moduleName);
-
-
-//            $wantModel = $this->confirm('Do you want model');
-
-                $controllerDirectory = $this->ask('In which directory should set controller');
-                $controllerName = $moduleName . 'Controller';
-                $additionalDirectory = $controllerDirectory ? '\\' . $controllerDirectory : '';
-                $controllerNamespace = 'App\\Http\\Controllers' . $additionalDirectory;
-                $createRequestImport = 'App\\Http\\Requests\\' . $moduleName . '\\CreateRequest';
-                $updateRequestImport = 'App\\Http\\Requests\\' . $moduleName . '\\UpdateRequest';
+            
+            $controllerName = $moduleName . 'Controller';
+            $additionalDirectory = $controllerDirectory ? '\\' . $controllerDirectory : '';
+            $controllerNamespace = 'App\\Http\\Controllers' . $additionalDirectory;
+            $createRequestImport = 'App\\Http\\Requests\\' . $moduleName . '\\CreateRequest';
+            $updateRequestImport = 'App\\Http\\Requests\\' . $moduleName . '\\UpdateRequest';
 
 
             $interfaceNamespace = "App\\" . $directoryName . "\\" . $moduleName . "\\Contracts";
@@ -83,23 +79,23 @@ class GenerateModule extends Command
 
             Artisan::call('make:model ' . $moduleName . ' -s -f -m');
 
-                Artisan::call('make:request ' . $moduleName . '/CreateRequest');
-                Artisan::call('make:request ' . $moduleName . '/UpdateRequest');
+            Artisan::call('make:request ' . $moduleName . '/CreateRequest');
+            Artisan::call('make:request ' . $moduleName . '/UpdateRequest');
 
-                Artisan::call('make:ff-controller', [
-                    'name' => $controllerName,
-                    'class' => $controllerName,
-                    'namespace' => $controllerNamespace,
-                    'createDTOImport' => $createDTOImport,
-                    'updateDTOImport' => $updateDTOImport,
-                    'modelVar' => $moduleVar,
-                    'serviceName' => $serviceClassName,
-                    'serviceVar' => $serviceVar,
-                    'createRequestImport' => $createRequestImport,
-                    'updateRequestImport' => $updateRequestImport,
-                    'serviceImport' => $serviceImport,
-                    'model' => $moduleName,
-                ]);
+            Artisan::call('make:ff-controller', [
+                'name' => $controllerName,
+                'class' => $controllerName,
+                'namespace' => $controllerNamespace,
+                'createDTOImport' => $createDTOImport,
+                'updateDTOImport' => $updateDTOImport,
+                'modelVar' => $moduleVar,
+                'serviceName' => $serviceClassName,
+                'serviceVar' => $serviceVar,
+                'createRequestImport' => $createRequestImport,
+                'updateRequestImport' => $updateRequestImport,
+                'serviceImport' => $serviceImport,
+                'model' => $moduleName,
+            ]);
 
             Artisan::call('make:interface', [
                 'name' => $interfaceClassName,
@@ -164,62 +160,62 @@ class GenerateModule extends Command
                 'get' => $getRoute,
                 'post' => $postRoute,
                 'patch' => $patchRoute,
-                'controllerNamespace' => '\\'.$controllerNamespace . '\\' . $controllerName . '::class',
+                'controllerNamespace' => '\\' . $controllerNamespace . '\\' . $controllerName . '::class',
                 'model' => lcfirst($moduleName),
             ]);
 
             Artisan::call('make:index-test', [
-                'name' => "Tests\Feature\\".$moduleName."\GetIndexTest",
-                'namespace' => "Tests\Feature\\".$moduleName,
+                'name' => "Tests\Feature\\" . $moduleName . "\GetIndexTest",
+                'namespace' => "Tests\Feature\\" . $moduleName,
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $indexRoute,
-                'modelNamespace' => 'App\\Models\\'.$moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName
             ]);
 
             Artisan::call('make:get-test', [
-                'name' => "Tests\Feature\\".$moduleName."\GetByIdTest",
-                'namespace' => "Tests\Feature\\".$moduleName,
+                'name' => "Tests\Feature\\" . $moduleName . "\GetByIdTest",
+                'namespace' => "Tests\Feature\\" . $moduleName,
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $getRoute,
-                'modelNamespace' => 'App\\Models\\'.$moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName
             ]);
 
             Artisan::call('make:create-test', [
-                'name' => "Tests\Feature\\".$moduleName."\CreateTest",
-                'namespace' => "Tests\Feature\\".$moduleName,
+                'name' => "Tests\Feature\\" . $moduleName . "\CreateTest",
+                'namespace' => "Tests\Feature\\" . $moduleName,
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $postRoute,
-                'modelNamespace' => 'App\\Models\\'.$moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName
             ]);
 
             Artisan::call('make:update-test', [
-                'name' => "Tests\Feature\\".$moduleName."\UpdateTest",
-                'namespace' => "Tests\Feature\\".$moduleName,
+                'name' => "Tests\Feature\\" . $moduleName . "\UpdateTest",
+                'namespace' => "Tests\Feature\\" . $moduleName,
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $patchRoute,
-                'modelNamespace' => 'App\\Models\\'.$moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName
             ]);
 
             Artisan::call('make:create-validation-test', [
-                'name' => "Tests\Feature\\".$moduleName."\CreateValidationTest",
-                'namespace' => "Tests\Feature\\".$moduleName,
+                'name' => "Tests\Feature\\" . $moduleName . "\CreateValidationTest",
+                'namespace' => "Tests\Feature\\" . $moduleName,
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $postRoute,
-                'modelNamespace' => 'App\\Models\\'.$moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName
             ]);
 
             Artisan::call('make:update-validation-test', [
-                'name' => "Tests\Feature\\".$moduleName."\UpdateValidationTest",
-                'namespace' => "Tests\Feature\\".$moduleName,
+                'name' => "Tests\Feature\\" . $moduleName . "\UpdateValidationTest",
+                'namespace' => "Tests\Feature\\" . $moduleName,
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $patchRoute,
-                'modelNamespace' => 'App\\Models\\'.$moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName
             ]);
         } catch (\Exception $exception) {
             dd($exception);

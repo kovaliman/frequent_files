@@ -13,7 +13,10 @@ class FrequentFilesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->publishes([
+            __DIR__.'/config/frequent-files.php' => $this->app->configPath('frequent-files.php'),
+        ], 'frequent-files');
+//        $this->mergeConfigFrom(__DIR__.'/config/frequent-files.php', 'frequent-files');
     }
 
     /**
