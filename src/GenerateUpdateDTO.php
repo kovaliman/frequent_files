@@ -5,6 +5,7 @@ namespace KovaLiman\FrequentlyFiles;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use KovaLiman\FrequentlyFiles\DTO\DTOPropertyParser;
 use Symfony\Component\Console\Input\InputArgument;
 
 class GenerateUpdateDTO extends GeneratorCommand
@@ -38,6 +39,7 @@ class GenerateUpdateDTO extends GeneratorCommand
         $stub = str_replace('{{ directoryName }}', $this->argument('directoryName'), $stub);
         $stub = str_replace('{{ model }}', $this->argument('model'), $stub);
         $stub = str_replace('{{ modelVar }}', $this->argument('modelVar'), $stub);
+        $stub = str_replace('{{ properties }}', DTOPropertyParser::parseProperties($this->argument('properties')), $stub);
 
         return $this->replaceClass($stub, $name);
     }
@@ -90,6 +92,7 @@ class GenerateUpdateDTO extends GeneratorCommand
             ['directoryName', InputArgument::REQUIRED],
             ['model', InputArgument::REQUIRED],
             ['modelVar', InputArgument::REQUIRED],
+            ['properties', InputArgument::REQUIRED]
         ];
     }
 }

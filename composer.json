@@ -3,7 +3,9 @@
     "description": "Frequently used files",
     "license": "MIT",
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "laravel/prompts": "0.3.x-dev"
+    },
     "autoload": {
         "psr-4": {
             "KovaLiman\\FrequentlyFiles\\": "src/"

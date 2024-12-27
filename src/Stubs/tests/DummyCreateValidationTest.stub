@@ -18,11 +18,10 @@ class CreateValidationTest extends TestCase
 
         Sanctum::actingAs($loggedUser);
 
-        $response = $this->json('post', route('{{ route }}'), [
-
-        ]);
+        $response = $this->json('post', route('{{ route }}'));
 
         $response->assertStatus(422);
 
+        {{ assertation }}
     }
 }

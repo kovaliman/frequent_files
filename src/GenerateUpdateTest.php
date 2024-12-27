@@ -39,7 +39,9 @@ class GenerateUpdateTest extends GeneratorCommand
         $stub = str_replace('{{ modelVar }}', $this->argument('modelVar'), $stub);
         $stub = str_replace('{{ route }}', $this->argument('route'), $stub);
         $stub = str_replace('{{ modelNamespace }}', $this->argument('modelNamespace'), $stub);
-
+        $stub = str_replace('{{ updateData }}', $this->makeUpdateData(), $stub);
+        $stub = str_replace('{{ assertation }}', $this->makeAssertation(), $stub);
+        
         return $this->replaceClass($stub, $name);
     }
     
@@ -75,7 +77,8 @@ class GenerateUpdateTest extends GeneratorCommand
             ['model', InputArgument::REQUIRED],
             ['modelVar', InputArgument::REQUIRED],
             ['route', InputArgument::REQUIRED],
-            ['modelNamespace', InputArgument::REQUIRED]
+            ['modelNamespace', InputArgument::REQUIRED],
+            ['properties', InputArgument::REQUIRED],
         ];
     }
 
@@ -111,5 +114,64 @@ class GenerateUpdateTest extends GeneratorCommand
     protected function rootNamespace()
     {
         return 'Tests';
+    }
+
+    public function makeUpdateData()
+    {
+        $properties = $this->argument('properties');
+        $total = count($properties);
+        if (!$total){
+            return '//todo';
+        }
+
+        $data = '';
+        for ($i = 0; $i<=$total-1; $i++){
+            $name = $properties[$i]->name;
+            $data .= "'$name' => ".$this->fakeData($properties[$i]->type).",";
+            if ($i< $total - 1){
+                $data .= "\n\t\t\t";
+            }
+        }
+        return $data;
+    }
+
+    public function fakeData($type)
+    {
+        if ($type === 'boolean'){
+            return true;
+        }
+
+        if ($type === 'integer'){
+            return rand(1, 20);
+        }
+
+        if ($type === 'string'){
+            return "'".fake()->text(20)."'";
+        }
+
+        if ($type === 'text'){
+            return "'".fake()->text(50)."'";
+        }
+
+        return '';
+    }
+
+    public function makeAssertation()
+    {
+        $properties = $this->argument('properties');
+        $total = count($properties);
+        if (!$total){
+            return '//todo';
+        }
+
+        $data = '';
+        for ($i = 0; $i<=$total-1; $i++){
+            $name = $properties[$i]->name;
+            $data .= '$this->assertTrue($response->original->'.$name .' === $record->'.$name.');';
+            if ($i< $total - 1){
+                $data .= "\n\t\t";
+            }
+        }
+        return $data;
     }
 }

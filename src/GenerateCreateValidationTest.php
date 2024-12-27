@@ -39,6 +39,7 @@ class GenerateCreateValidationTest extends GeneratorCommand
         $stub = str_replace('{{ modelVar }}', $this->argument('modelVar'), $stub);
         $stub = str_replace('{{ route }}', $this->argument('route'), $stub);
         $stub = str_replace('{{ modelNamespace }}', $this->argument('modelNamespace'), $stub);
+        $stub = str_replace('{{ assertation }}', $this->makeAssertation(), $stub);
 
         return $this->replaceClass($stub, $name);
     }
@@ -75,7 +76,8 @@ class GenerateCreateValidationTest extends GeneratorCommand
             ['model', InputArgument::REQUIRED],
             ['modelVar', InputArgument::REQUIRED],
             ['route', InputArgument::REQUIRED],
-            ['modelNamespace', InputArgument::REQUIRED]
+            ['modelNamespace', InputArgument::REQUIRED],
+            ['properties', InputArgument::REQUIRED],
         ];
     }
 
@@ -111,5 +113,32 @@ class GenerateCreateValidationTest extends GeneratorCommand
     protected function rootNamespace()
     {
         return 'Tests';
+    }
+
+    public function makeAssertation()
+    {
+        $properties = $this->argument('properties');
+        $total = count($properties);
+        if (!$total) {
+            return '//todo';
+        }
+
+        $data = '';
+        $totalErrors = 0;
+        for ($i = 0; $i <= $total - 1; $i++) {
+            $name = $properties[$i]->name;
+            if ($properties[$i]->required) {
+                $totalErrors += 1;
+                $data .= '$this->assertTrue($response->original[' . '"errors"' . '][' . '"' . $name . '"' . '][0] === __('.'"validation.required"'.', ['.'"attribute" => "'.$name.'"'.']));';
+                if ($i < $total - 1) {
+                    $data .= "\n\t\t";
+                }
+            }
+        }
+        $connected = '$this->assertTrue(count($response->original[' . '"errors"' . ']) === ' . $totalErrors . ');';
+        $connected .= "\n\t\t";
+        $connected .= $data;
+
+        return $connected;
     }
 }

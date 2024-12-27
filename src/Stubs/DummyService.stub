@@ -21,14 +21,14 @@ class {{ class }} extends SearchService
     public function create({{ createDataClass }} $createData): Model
     {
         return $this->{{ interfaceVar }}->create([
-            //todo
+            {{ creteDataArray }}
         ]);
     }
 
     public function update({{ updateDataClass }} $updateData): Model
     {
         return $this->{{ interfaceVar }}->update($updateData->{{ modelVar }}, [
-            //todo
+            {{ updateDataArray }}
         ]);
     }
 

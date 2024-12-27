@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class UpdateData extends DataTransferObject
 {
     public ?Model ${{ modelVar }} = null;
-    //todo
+    {{ properties }}
 }

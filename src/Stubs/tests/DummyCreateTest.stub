@@ -18,11 +18,14 @@ class CreateTest extends TestCase
 
         Sanctum::actingAs($loggedUser);
 
-        $response = $this->json('post', route('{{ route }}'), [
+        $data = [
+            {{ createData }}
+        ];
 
-        ]);
+        $response = $this->json('post', route('{{ route }}'), $data);
 
         $response->assertStatus(200);
 
+        {{ assertation }}
     }
 }

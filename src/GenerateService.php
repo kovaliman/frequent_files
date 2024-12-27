@@ -51,6 +51,9 @@ class GenerateService extends GeneratorCommand
         $stub = str_replace('{{ updateDTOImport }}', $this->argument('updateDTOImport'), $stub);
         $stub = str_replace('{{ modelVar }}', $this->argument('modelVar'), $stub);
 
+        $stub = str_replace('{{ creteDataArray }}', $this->createData(), $stub);
+        $stub = str_replace('{{ updateDataArray }}', $this->updateData(), $stub);
+
         return $this->replaceClass($stub, $name);
     }
 
@@ -113,6 +116,43 @@ class GenerateService extends GeneratorCommand
             ['createDTOImport', InputArgument::REQUIRED],
             ['updateDTOImport', InputArgument::REQUIRED],
             ['modelVar', InputArgument::REQUIRED],
+            ['properties', InputArgument::REQUIRED]
         ];
+    }
+
+    public function createData()
+    {
+        $properties = $this->argument('properties');
+        $total = count($properties)-1;
+        if (!count($properties)){
+            return '//todo';
+        }
+        $data = '';
+        for ($i = 0; $i<=$total-1; $i++){
+            $name = $properties[$i]->name;
+            $data .= "'$name' => $" . "createData->".$name.",";
+            if ($i<$total){
+                $data .= "\n\t\t\t";
+            }
+        }
+        return $data;
+    }
+
+    public function updateData()
+    {
+        $properties = $this->argument('properties');
+        $total = count($properties)-1;
+        if (!count($properties)){
+            return '//todo';
+        }
+        $data = '';
+        for ($i = 0; $i<=$total-1; $i++){
+            $name = $properties[$i]->name;
+            $data .= "'$name' => $" . "updateData->".$name." ?? $"."updateData->".$this->argument('modelVar')."->".$name.",";
+            if ($i<$total){
+                $data .= "\n\t\t\t";
+            }
+        }
+        return $data;
     }
 }

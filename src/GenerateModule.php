@@ -6,7 +6,10 @@ use Illuminate\Console\Command;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
+use KovaLiman\FrequentlyFiles\DTO\PropertyDTO;
 use Symfony\Component\Console\Input\InputArgument;
+use function Laravel\Prompts\select;
+use function Laravel\Prompts\text;
 
 class GenerateModule extends Command
 {
@@ -45,10 +48,12 @@ class GenerateModule extends Command
             $directoryName = config('frequent-files.directory');
             $controllerDirectory = config('frequent-files.controller_directory');
 
-            $moduleName = $this->ask('Module name?');
+            $moduleName = text('Module name');
+
+            $properties = $this->getModelProperties();
 
             $moduleVar = lcfirst($moduleName);
-            
+
             $controllerName = $moduleName . 'Controller';
             $additionalDirectory = $controllerDirectory ? '\\' . $controllerDirectory : '';
             $controllerNamespace = 'App\\Http\\Controllers' . $additionalDirectory;
@@ -131,12 +136,14 @@ class GenerateModule extends Command
                 'createDTOImport' => $createDTOImport,
                 'updateDTOImport' => $updateDTOImport,
                 'modelVar' => $moduleVar,
+                'properties' => $properties,
             ]);
 
             Artisan::call('make:create-dto', [
                 'name' => $createDTOClassName,
                 'namespace' => $createDTONamespace,
                 'directoryName' => $directoryName,
+                'properties' => $properties,
             ]);
 
             Artisan::call('make:update-dto', [
@@ -145,6 +152,7 @@ class GenerateModule extends Command
                 'directoryName' => $directoryName,
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
+                'properties' => $properties,
             ]);
 
             $routeName = Str::kebab($moduleName);
@@ -188,7 +196,8 @@ class GenerateModule extends Command
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $postRoute,
-                'modelNamespace' => 'App\\Models\\' . $moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName,
+                'properties' => $properties,
             ]);
 
             Artisan::call('make:update-test', [
@@ -197,7 +206,8 @@ class GenerateModule extends Command
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $patchRoute,
-                'modelNamespace' => 'App\\Models\\' . $moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName,
+                'properties' => $properties,
             ]);
 
             Artisan::call('make:create-validation-test', [
@@ -206,7 +216,8 @@ class GenerateModule extends Command
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $postRoute,
-                'modelNamespace' => 'App\\Models\\' . $moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName,
+                'properties' => $properties,
             ]);
 
             Artisan::call('make:update-validation-test', [
@@ -215,11 +226,48 @@ class GenerateModule extends Command
                 'model' => $moduleName,
                 'modelVar' => $moduleVar,
                 'route' => $patchRoute,
-                'modelNamespace' => 'App\\Models\\' . $moduleName
+                'modelNamespace' => 'App\\Models\\' . $moduleName,
+                'properties' => $properties,
             ]);
+
+            $this->info($moduleName . ' module created');
         } catch (\Exception $exception) {
             dd($exception);
         }
 
+    }
+
+    public function getModelProperties()
+    {
+        $properties = [];
+
+        $wantProps = select(
+            label: 'Do you want to add properties?',
+            options: ['Yes', 'No']
+        );
+
+        while ($wantProps === 'Yes') {
+            $name = text('Property name');
+            $type = select(
+                label: 'Property type',
+                options: ['string', 'integer', 'boolean', 'text']
+            );
+            $required = select(
+                label: 'Is required?',
+                options: ['Yes', 'No'],
+                default: 'Yes'
+            );
+            $prop = new PropertyDTO($name, $type, $required === 'Yes');
+            $properties[] = $prop;
+            foreach ($properties as $property){
+                $this->info($property->name);
+            }
+            $wantProps = select(
+                label: 'Add another properties?',
+                options: ['Yes', 'No']
+            );
+        }
+
+        return $properties;
     }
 }

@@ -5,6 +5,7 @@ namespace KovaLiman\FrequentlyFiles;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use KovaLiman\FrequentlyFiles\DTO\DTOPropertyParser;
 use Symfony\Component\Console\Input\InputArgument;
 
 class GenerateCreateDTO extends GeneratorCommand
@@ -36,7 +37,8 @@ class GenerateCreateDTO extends GeneratorCommand
 
         $stub = str_replace('{{ namespace }}', $this->argument('namespace'), $stub);
         $stub = str_replace('{{ directoryName }}', $this->argument('directoryName'), $stub);
-
+        $stub = str_replace('{{ properties }}', DTOPropertyParser::parseProperties($this->argument('properties')), $stub);
+        
         return $this->replaceClass($stub, $name);
     }
 
@@ -86,6 +88,7 @@ class GenerateCreateDTO extends GeneratorCommand
             ['name', InputArgument::REQUIRED, 'The name of the contract.'],
             ['namespace', InputArgument::REQUIRED],
             ['directoryName', InputArgument::REQUIRED],
+            ['properties', InputArgument::REQUIRED]
         ];
     }
 }

@@ -20,12 +20,18 @@ class UpdateTest extends TestCase
 
         $record = {{ model }}::factory()->create();
 
+        $data = [
+            {{ updateData }}
+        ];
+
         $response = $this->json('patch', route('{{ route }}'), [
             '{{ modelVar }}' => $record->id
-        ], [
-
-        ]);
+        ], $data);
 
         $response->assertStatus(200);
+
+        $record->refresh();
+
+        {{ assertation }}
     }
 }
